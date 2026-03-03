@@ -1,0 +1,30 @@
+snowflake:
+  account: "${SNOWFLAKE_ACCOUNT}"
+  user: "${SNOWFLAKE_USER}"
+  password: "${SNOWFLAKE_PASSWORD}"
+  warehouse: "COMPUTE_WH_L"
+  database: "LAKEHOUSE"
+  role: "DATA_ENGINEER"
+
+s3:
+  bucket: "${S3_BUCKET}"
+  raw_prefix: "raw/"
+  region: "us-east-1"
+
+dbt:
+  project_dir: "./dbt_project"
+  profiles_dir: "./dbt_project/profiles"
+  target: "prod"
+
+snowpipe:
+  pipes:
+    - name: "EVENTS_PIPE"
+      stage: "LAKEHOUSE.RAW.S3_EVENTS_STAGE"
+      table: "LAKEHOUSE.RAW.EVENTS"
+    - name: "TRANSACTIONS_PIPE"
+      stage: "LAKEHOUSE.RAW.S3_TRANSACTIONS_STAGE"
+      table: "LAKEHOUSE.RAW.TRANSACTIONS"
+
+scheduling:
+  incremental_interval_minutes: 15
+  full_refresh_cron: "0 2 * * *"
